@@ -15,6 +15,40 @@ Drivers are clustered into risk tiers using K-Medoids and K-Means, evaluated by 
 
 ---
 
+## Results
+
+### Segmentation
+
+K-Means with k=3 produced the best silhouette score and is used as the final segmentation model.
+The three risk tiers are well-separated in PCA space with distinct behavioural profiles:
+
+- **Risk 1 (Low):** consistently low harsh-event rates, moderate speeds, low-risk driving patterns
+- **Risk 2 (Medium):** intermediate profile across all telematics features
+- **Risk 3 (High):** materially elevated per-km harsh braking, acceleration, and cornering rates; 95th-percentile speeds significantly higher than other tiers
+
+### Loss Cost Model
+
+A Gamma GLM (log link, IRLS) was fit on 420 policy observations with driver risk tier as a
+categorical factor alongside policy and vehicle covariates. Pseudo R-squared (Cox-Snell) of 0.374.
+
+Key findings:
+
+- **Risk tier is statistically significant.** Risk_2 and Risk_3 drivers carry 12.7% and 16.9%
+  higher predicted claim amounts than Risk_1 (coef = 0.120, p < 0.001 and coef = 0.157,
+  p = 0.019 respectively)
+- **Driver age** is positively associated with claim amount (coef = 0.011, p < 0.001)
+- **Pay-as-you-drive policies** associated with 26.4% higher predicted losses
+  (coef = 0.235, p = 0.020)
+- **Retired usage** associated with 18.5% lower predicted losses vs. baseline
+  (coef = -0.205, p = 0.010)
+- **Annual payment frequency** associated with lower predicted losses vs. monthly
+  (coef = -0.101, p = 0.017)
+- **Policy duration** negatively associated with claim amount (coef = -0.005, p = 0.012),
+  suggesting longer-tenured policyholders are lower risk
+- Vehicle value and weight are both positively associated with claim amounts
+
+---
+
 ## Repo Structure
 
 ```
